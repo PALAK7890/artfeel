@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "../style/login.css";
 import { useNavigate } from "react-router-dom";
-
+import { FcAbout, FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,12 +64,23 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+           <div className="forgot">
+            <span onClick={() => navigate("/forgot-password")}>
+              Forgot password?
+            </span>
+          </div>
 
           <button disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
+
+<div className="social-login"><div className="icons">
+            <FcGoogle size={26} /> 
+          <FaGithub size={26} /></div>
+         
+        </div>
         <span onClick={() => navigate("/register")}>
           Don’t have an account? Sign up
         </span>
