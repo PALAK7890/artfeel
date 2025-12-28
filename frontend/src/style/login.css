@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(120deg, #f7f6f3, #efe9f1);
+}
+
+.login-card {
+  width: 380px;
+  padding: 45px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.login-card h1 {
+  font-size: 3rem;
+  margin-bottom: 5px;
+  background: linear-gradient(90deg, #f7a8c8, #a5c8ff, #cbb5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-card p {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 18px;
+  background: #f4f4f4;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.login-card input:focus {
+  background: #ffffff;
+  box-shadow: 0 0 0 2px #cbb5ff;
+}
+
+.login-card button {
+  background: #a88fac;
+  color: white;
+  border-radius: 14px;
+}
+
+.login-card button:hover {
+  background: #8f7394;
+}
+
+.login-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-card span {
+  display: block;
+  margin-top: 22px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-card span:hover {
+  color: #b388eb;
+  text-decoration: underline;
+}
