@@ -1,0 +1,151 @@
+.footer {
+  background: #e0dfdf;
+  border-top: 1px solid #e2e2e2;
+  padding: 60px 20px 30px;
+  text-align: center;
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Brand */
+.footer h3 {
+  font-size: 2rem;
+  color: #a88fac;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.footer p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Links */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.footer-links span {
+  cursor: pointer;
+  color: #555;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.footer-links span:hover {
+  color: #a88fac;
+}
+
+/* Social icons */
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 25px;
+}
+
+.footer-socials svg {
+  font-size: 22px;
+  color: #777;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.footer-socials svg:hover {
+  color: #a88fac;
+  transform: translateY(-4px);
+}
+
+/* Bottom line */
+.footer-bottom {
+  margin-top: 30px;
+  font-size: 13px;
+  color: #999;
+}
+
+/* Contact Popup Overlay */
+.contact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(20, 20, 20, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+
+/* Contact Modal */
+.contact-box {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 45px 40px;
+  border-radius: 22px;
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.2);
+  animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.contact-box h3 {
+  color: #a88fac;
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+}
+
+.contact-box p {
+  color: #555;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+/* Close button */
+.contact-box button {
+  margin-top: 25px;
+  padding: 10px 28px;
+  border-radius: 30px;
+  border: none;
+  background: #a88fac;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.contact-box button:hover {
+  background: #8f7394;
+  transform: translateY(-2px);
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .footer-socials {
+    gap: 20px;
+  }
+}

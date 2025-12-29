@@ -1,0 +1,20 @@
+import jwt, { decode } from 'jsonwebtoken'
+
+export default function profileauth(req,res,next){
+    const token= req.headers.authorization
+
+    if (!token){
+        return res.status(401).json({'message':'token is invalid'})
+    }
+
+    try{
+        const decoded= jwt.verify(token,process.env.JWT_SECRET)
+        req.userId=decoded.id
+        next();
+
+
+    }catch{
+        return res.status(401).json({'message':'no TOKEN '})
+    }
+
+}

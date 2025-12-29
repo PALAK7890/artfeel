@@ -81,7 +81,7 @@ export default function Login() {
           <FaGithub size={26} /></div>
          
         </div>
-        <span onClick={() => navigate("/register")}>
+        <span onClick={() => navigate("/signin")}>
           Don’t have an account? Sign up
         </span>
       </div>

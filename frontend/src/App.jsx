@@ -1,21 +1,34 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css'
+import { useLocation } from "react-router-dom";
 import Login from "./components/login";
 import Home from "./components/home";
 import SignIn from './components/signin'
+import Navbar from "./components/navbar";
+import Profile from "./components/profile";
+function Layout() {
+  const location = useLocation();
+  const hideNavbar =
+    location.pathname === "/login" || location.pathname === "/signin";
+
+  return (
+    <>
+      {!hideNavbar && <Navbar />}
+
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </>
+  );
+}
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-
-        <Route path="/login" element={<Login />} />
-    <Route path="/signin" element={<SignIn />} />
-
-        <Route path="/" element={<Home />} />
-
-
-      </Routes>
+      <Layout />
     </BrowserRouter>
   );
 }

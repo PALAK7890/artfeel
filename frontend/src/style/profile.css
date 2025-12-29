@@ -1,0 +1,158 @@
+.profile-wrapper {
+  min-height: 100vh;
+  background: #f7f6f3;
+  padding: 50px 8%;
+}
+
+/* Top Section */
+.profile-top {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+/* Profile Picture */
+.profile-pic {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #a88fac;
+  color: white;
+  font-size: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Info */
+.profile-info h2 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.profile-info span {
+  color: #777;
+  font-size: 14px;
+}
+
+.profile-info p {
+  margin-top: 12px;
+  font-style: italic;
+  color: #8f7394;
+  max-width: 400px;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+/* Empty State */
+.no-posts {
+  text-align: center;
+  padding: 60px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.no-posts p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.no-posts button {
+  padding: 12px 26px;
+  border-radius: 30px;
+  border: none;
+  background: #a88fac;
+  color: white;
+  cursor: pointer;
+}
+
+/* Gallery */
+.profile-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 25px;
+}
+
+.art-box {
+  background: white;
+  height: 220px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+.art-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .profile-top {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.edit-btn {
+  margin-top: 15px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  background: #a88fac;
+  color: white;
+  cursor: pointer;
+}
+
+/* Edit popup */
+.edit-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.edit-box input,
+.edit-box textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: none;
+  background: #f2f2f2;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-actions button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: #a88fac;
+  color: white;
+  cursor: pointer;
+}
+

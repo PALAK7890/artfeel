@@ -1,10 +1,11 @@
 import "../style/Home.css";
 import { useNavigate } from "react-router-dom";
-
+import Footer from "./footer";
 export default function Home() {
   const navigate = useNavigate();
 
   return (
+    <>
     <div className="home-wrapper">
       <header className="home-header">
         <h1>ArtFeel 🎨</h1>
@@ -29,6 +30,10 @@ export default function Home() {
           </p>
         </div>
       </div>
+      
     </div>
+    <Footer/>
+    </>
+
   );
 }
