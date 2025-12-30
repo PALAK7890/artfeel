@@ -6,6 +6,7 @@ import Home from "./components/home";
 import SignIn from './components/signin'
 import Navbar from "./components/navbar";
 import Profile from "./components/profile";
+import UploadBlog from "./components/upload";
 function Layout() {
   const location = useLocation();
   const hideNavbar =
@@ -20,6 +21,7 @@ function Layout() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/upload" element={<UploadBlog />} />
       </Routes>
     </>
   );
