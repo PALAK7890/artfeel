@@ -1,0 +1,135 @@
+.explore-page {
+  min-height: 100vh;
+  background: #f7f6f3;
+  padding: 50px 8%;
+}
+
+.explore-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+}
+
+/* Card */
+.explore-card {
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.explore-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Image */
+.card-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+/* Bottom part */
+.card-info {
+  padding: 18px;
+}
+
+.card-info p {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+/* Likes + Author row */
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stats {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.author {
+  font-size: 0.85rem;
+  color: #a88fac;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.author:hover {
+  text-decoration: underline;
+}
+.blur-bg {
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Modal glass background */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(247,246,243,0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+/* Modal card */
+.modal-card {
+  background: white;
+  border-radius: 25px;
+  width: 70%;
+  max-width: 800px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.modal-card img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.modal-content {
+  padding: 25px;
+}
+
+.modal-actions {
+  margin: 15px 0;
+  font-size: 1rem;
+  color: #a88fac;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 20px;
+  border: none;
+  background: #f7f6f3;
+  outline: none;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+}
+

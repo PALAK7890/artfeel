@@ -48,7 +48,15 @@ const saveProfile = async () => {
           <button className="edit-btn" onClick={() => setShowEdit(true)}>
             Edit Profile ✏️
           </button>
+          <button
+  className="edit-btn"
+  style={{ marginLeft: "10px" }}
+  onClick={() => navigate("/inbox")}
+>
+  Inbox 🔔
+</button>
         </div>
+        
       </div>
 
       {/* Creations */}

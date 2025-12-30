@@ -15,7 +15,8 @@ export default function Navbar() {
       <h2 onClick={() => navigate("/")}>ArtFeel</h2>
 
       <div className="nav-links">
-        <span onClick={() => navigate("/")}>Explore</span>
+        <span onClick={() => navigate("/")}>Home</span>
+        <span onClick={() => navigate("/explore")}>Explore</span>
         <span onClick={() => navigate("/upload")}>Upload</span>
         {user && <span onClick={() => navigate("/profile")}>Profile</span>}
       </div>
