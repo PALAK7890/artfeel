@@ -2,6 +2,7 @@ import "../style/profile.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+
 export default function Profile() {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function Profile() {
   const blogs = [];
 
 const saveProfile = async () => {
-  const res = await fetch("http://localhost:8080/api/auth/profile", {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

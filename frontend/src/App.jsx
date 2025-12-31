@@ -9,6 +9,8 @@ import Profile from "./components/profile";
 import UploadBlog from "./components/upload";
 import Explore from "./components/explorePage";
 import Inbox from "./components/inbox";
+import UserProfile from "./components/anotherUserProfile";
+
 function Layout() {
   const location = useLocation();
   const hideNavbar =
@@ -26,6 +28,7 @@ function Layout() {
         <Route path="/upload" element={<UploadBlog />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/inbox" element={<Inbox />} />
+        <Route path="/user/:username" element={<UserProfile />} />
       </Routes>
     </>
   );

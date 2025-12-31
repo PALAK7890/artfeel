@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../style/navbar.css";
 
+
 export default function Navbar() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -24,6 +25,10 @@ export default function Navbar() {
       <div className="nav-user">
         {user ? (
           <>
+                  <span className="nav-bell" onClick={() => navigate("/inbox")}>
+          🔔
+        </span>
+
             <span className="username">Hi, {user.name}</span>
             <button onClick={logout}>Logout</button>
           </>

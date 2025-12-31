@@ -3,6 +3,7 @@ import "../style/login.css";
 import { useNavigate } from "react-router-dom";
 import { FcAbout, FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +16,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8080/api/auth/login", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

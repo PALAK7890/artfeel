@@ -2,6 +2,7 @@ import { FaInstagram, FaTwitter, FaGithub } from "react-icons/fa";
 import "../style/footer.css";
 import { useState } from "react";
 
+
 export default function Footer() {
   const [showContact, setShowContact] = useState(false);
 

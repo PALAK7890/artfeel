@@ -1,29 +1,76 @@
-import React, { useState } from "react";
-import "../style/uploadBlog.css";
-
+import React, { useState } from "react"
+import "../style/uploadBlog.css"
+import { useNavigate } from "react-router-dom"
 export default function UploadBlog() {
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+   const [image, setImage] = useState(null)
+  const [preview, setPreview] = useState(null)
+  const [content, setContent] = useState("")
+  const [title, setTitle] = useState("")
+  const [tags, setTags] = useState("")
+  const navigate = useNavigate()
 
   const handleImage = (e) => {
     const file = e.target.files[0];
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
+const publishBlog = async () => {
+  if (!image || !content) {
+    alert("Please upload image and write something");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.readAsDataURL(image);
+
+  reader.onloadend = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token")
+      },
+      body: JSON.stringify({
+        image: reader.result,
+        desc: content,
+        title,
+        tags
+      })
+    });
+
+    const data = await res.json();
+    navigate("/explore");
+  };
+};
 
   return (
     <div className="blog-upload">
 
       <div className="top-section">
 
-        {/* LEFT – Title + meta */}
         <div className="blog-meta">
-          <input type="text" placeholder="Blog Title" />
-          <input type="text" placeholder="Author name" />
-          <input type="text" placeholder="Tags (art, design...)" />
+          <input
+  type="text"
+  placeholder="Blog Title"
+  value={title}
+  onChange={(e)=>setTitle(e.target.value)}
+/>
+
+<input
+  type="text"
+  placeholder="Author name"
+  disabled
+  value={JSON.parse(localStorage.getItem("user"))?.name || ""}
+/>
+
+<input
+  type="text"
+  placeholder="Tags (art, design...)"
+  value={tags}
+  onChange={(e)=>setTags(e.target.value)}
+/>
         </div>
 
-        {/* RIGHT – Image */}
         <div className="blog-image">
           {preview ? (
             <img src={preview} alt="preview" />
@@ -35,13 +82,16 @@ export default function UploadBlog() {
 
       </div>
 
-      {/* BOTTOM – Blog content */}
       <textarea
-        className="blog-content"
-        placeholder="Write your blog here..."
-      ></textarea>
+  className="blog-content"
+  placeholder="Write your blog here..."
+  value={content}
+  onChange={(e)=>setContent(e.target.value)}
+></textarea>
 
-      <button className="publish-btn">Publish Blog</button>
+<button className="publish-btn" onClick={publishBlog}>
+  Publish Blog
+</button>
 
     </div>
   );

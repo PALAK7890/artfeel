@@ -1,10 +1,18 @@
-import "../style/home.css";
+import "../style/Home.css";
 import { useNavigate } from "react-router-dom";
 import Footer from "./footer";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+  const [featured, setFeatured] = useState([]);
+
+useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_URL}/api/blog/featured`)
+    .then(res => res.json())
+    .then(data => setFeatured(data));
+}, []);
 
   return (
     <>
@@ -14,7 +22,6 @@ export default function Home() {
 <section className="screen hero">
   <div className="hero-magazine">
 
-    {/* Black square */}
     <div className="hero-dark">
       <p>
         ArtFeel is a quiet place where your emotions can breathe.
@@ -23,7 +30,6 @@ export default function Home() {
       </p>
     </div>
 
-    {/* Light rectangle */}
     <div className="hero-light">
       <h1>ArtFeel</h1>
       <span>Where emotions become art</span>
@@ -69,13 +75,17 @@ export default function Home() {
 
   <div className="featured-row">
     <div className="featured-track">
-      <div className="art-card"></div>
-      <div className="art-card"></div>
-      <div className="art-card"></div>
-      <div className="art-card"></div>
-      <div className="art-card"></div>
-      <div className="art-card"></div>
+  {featured.map((post) => (
+    <div className="art-card" key={post._id}>
+      <img src={post.image} />
+
+      <div className="art-info">
+        <p>{post.desc}</p>
+        <span>❤️ {post.likeCount}</span>
+      </div>
     </div>
+  ))}
+</div>
 
     <div
       className="explore-arrow"

@@ -52,3 +52,20 @@
   font-size: 14px;
   color: #555;
 }
+.nav-bell {
+  font-size: 22px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* notification dot */
+.nav-bell::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 8px;
+  height: 8px;
+  background: #a88fac;
+  border-radius: 50%;
+}

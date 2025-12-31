@@ -218,12 +218,35 @@
 }
 
 .art-card {
-  min-width: 280px;
-  height: 340px;
-  background: #ddd;
-  border-radius: 20px;
-  flex-shrink: 0;
+  width: 280px;
+  height: 360px;
+  border-radius: 25px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  position: relative;
 }
+
+.art-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.art-info {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: white;
+}
+
+.art-info p {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
 
 /* Arrow */
 .explore-arrow {

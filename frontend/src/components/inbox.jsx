@@ -1,5 +1,6 @@
 import "../style/inbox.css";
 
+
 const notifications = [
   {
     id: 1,
