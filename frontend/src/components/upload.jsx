@@ -20,27 +20,32 @@ const publishBlog = async () => {
     return;
   }
 
-  const reader = new FileReader();
-  reader.readAsDataURL(image);
+  const publishBlog = async () => {
+  if (!image || !content) {
+    alert("Please upload image and write something");
+    return;
+  }
 
-  reader.onloadend = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token")
-      },
-      body: JSON.stringify({
-        image: reader.result,
-        desc: content,
-        title,
-        tags
-      })
-    });
+  const token = localStorage.getItem("token");
 
-    const data = await res.json();
-    navigate("/explore");
-  };
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("desc", content);
+  formData.append("title", title);
+  formData.append("tags", tags);
+
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: formData
+  });
+
+  const data = await res.json();
+  navigate("/explore");
+};
+
 };
 
   return (
