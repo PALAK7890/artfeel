@@ -5,7 +5,7 @@ import auth from "../middlewares/profileauth.js";
 
 const router = express.Router();
 
-router.post("/", async (req,res)=>{
+router.post("/",auth, async (req,res)=>{
   const blog = await Blog.create({
     image: req.body.image,
     desc: req.body.desc,

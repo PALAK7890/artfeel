@@ -16,7 +16,7 @@ export default function Profile() {
   const blogs = [];
 
 const saveProfile = async () => {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
