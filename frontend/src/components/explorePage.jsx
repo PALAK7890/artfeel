@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "../style/explore.css";
 
 export default function Explore() {
+  const user = JSON.parse(localStorage.getItem("user"))
+const email = user?.email
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
@@ -10,7 +12,8 @@ export default function Explore() {
 
   // Fetch all blogs for Explore
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/blog`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/blog/email/${email}`)
+
       .then(res => res.json())
       .then(data => setPosts(data));
   }, []);

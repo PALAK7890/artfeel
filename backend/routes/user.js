@@ -13,25 +13,25 @@ router.put(
   auth,
   upload.single("image"),
   async (req, res) => {
-    const updates = {
-      name: req.body.name,
-      age: req.body.age,
-      bio: req.body.bio
-    };
+    try {
+      const user = req.user   // MongoDB user from auth middleware
 
-    if (req.file) {
-      updates.avatar = req.file.path; 
+      if (req.file) {
+        user.avatar = req.file.path   // Cloudinary URL
+      }
+
+      user.name = req.body.name
+      user.age = req.body.age
+      user.bio = req.body.bio
+
+      await user.save()
+      res.json(user)
+
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ error: "Profile update failed" })
     }
-
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      updates,
-      { new: true }
-    );
-
-    res.json(user);
   }
-);
-
+)
 
 export default router;

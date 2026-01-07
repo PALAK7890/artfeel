@@ -1,22 +1,29 @@
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from "jsonwebtoken"
+import User from "../models/user.js"
 
-
-
-export default function profileauth(req, res, next) {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
-  }
-
-  const token = authHeader.split(" ")[1]; // Remove "Bearer "
-
+export default async function profileauth(req, res, next) {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;      // so we can use req.user.id, req.user.name
-    req.userId = decoded.id;
-    next();
+    const authHeader = req.headers.authorization
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" })
+    }
+
+    const token = authHeader.split(" ")[1]
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    const user = await User.findById(decoded.id)
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" })
+    }
+
+    req.user = await User.findById(decoded.id)
+
+    next()
+
   } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+    console.error(err)
+    res.status(401).json({ message: "Invalid token" })
   }
 }

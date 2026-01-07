@@ -8,22 +8,37 @@ export default function UserProfile() {
   const [user, setUser] = useState({});
   const [blogs, setBlogs] = useState([]);
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/blog/api/user/${username}`)
-      .then(res => res.json())
-      .then(data => setUser(data));
+useEffect(() => {
+  // fetch user profile
+  fetch(`${import.meta.env.VITE_API_URL}/api/user/email/${username}`)
+    .then(res => res.json())
+    .then(data => setUser(data));
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/blog/api/blog/username/${username}`)
-      .then(res => res.json())
-      .then(data => setBlogs(data));
-  }, [username]);
+  // fetch user blogs
+  fetch(`${import.meta.env.VITE_API_URL}/api/blog/email/${username}`)
+    .then(res => res.json())
+    .then(data => setBlogs(data));
+}, [username]);
 
   return (
     <div className="profile-wrapper">
 
       <div className="profile-top">
         <div className="profile-pic">
-          {user.name?.[0]}
+            {user.avatar ? (
+    <img
+      src={
+        user.avatar.startsWith("http")
+          ? user.avatar
+          : `${import.meta.env.VITE_API_URL}${user.avatar}`
+      }
+      className="avatar-img"
+    />
+  ) : (
+    <span className="avatar-letter">
+      {user.name?.[0] || "A"}
+    </span>
+  )}
         </div>
 
         <div className="profile-info">
@@ -38,7 +53,8 @@ export default function UserProfile() {
       <div className="profile-gallery">
         {blogs.map((blog) => (
           <div className="art-box" key={blog._id}>
-            <img src={blog.image} />
+            <img src={`${import.meta.env.VITE_API_URL}${blog.image}`} />
+
           </div>
         ))}
       </div>

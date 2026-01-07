@@ -4,19 +4,19 @@ import { useState ,useEffect} from "react"
 
 
 export default function Profile() {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedUser = JSON.parse(localStorage.getItem("user"))  || {}
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(storedUser || {
-  name: "Artist",
-  age: "",
-  bio: "",
-  avatar: ""
+  const [user, setUser] = useState({
+  name: storedUser?.name || "",
+  age: storedUser?.age || "",
+  bio: storedUser?.bio || "",
+  avatar: storedUser?.avatar || ""
 })
 
   const [showEdit, setShowEdit] = useState(false)
   const [avatar, setAvatar] = useState(null)
-const [preview, setPreview] = useState(storedUser?.avatar || null)
+const [preview, setPreview] = useState(storedUser?.avatar || "")
 const [saving, setSaving] = useState(false)
   const [blogs, setBlogs] = useState([])
 
@@ -87,13 +87,23 @@ const saveProfile = async () => {
       <div className="profile-top">
        <div className="profile-pic">
   {preview ? (
-    <img src={preview} className="avatar-img" />
+<img
+  src={
+    preview?.startsWith("blob:")
+      ? preview
+      : preview
+        ? preview               // Cloudinary full URL
+        : "/default-avatar.png"
+  }
+  className="avatar-img"
+/>
+
+
+
   ) : (
     <span className="avatar-letter">{user?.name?.[0] || "A"}</span>
   )}
 </div>
-
-
 
         <div className="profile-info">
           <h2>{user?.name || "Artist"}</h2>
@@ -144,7 +154,19 @@ const saveProfile = async () => {
             <textarea  placeholder="Bio"  value={user.bio}  onChange={(e) => setUser({ ...user, bio: e.target.value })}/>
 
             <div className="edit-avatar">
-            <img src={preview || "/default-avatar.png"} className="edit-avatar-img"/>
+<img
+  src={
+    preview?.startsWith("blob:")
+      ? preview
+      : preview
+        ? preview
+        : "/default-avatar.png"
+  }
+  className="edit-avatar-img"
+/>
+
+
+
 
   <label className="edit-upload-btn"> Change Photo
     <input type="file"  accept="image/*"  onChange={(e) => {
