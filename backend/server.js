@@ -3,14 +3,18 @@ import mongoose from "mongoose"
 import cors from "cors"
 import dotenv from "dotenv"
 import authRoutes from "./routes/auth.js"
-import blogRoutes from'./routes/blog.js'
-import notificationRoutes from './routes/inbox.js'
-import userRoutes from './routes/user.js'
+import blogRoutes from "./routes/blog.js"
+import notificationRoutes from "./routes/inbox.js"
+import userRoutes from "./routes/user.js"
 
 dotenv.config()
 const app = express()
 
 app.use(cors())
+
+// ❗ DO NOT put express.json() before multer routes
+app.use("/api/blog", blogRoutes)
+
 app.use(express.json())
 
 mongoose.connect(process.env.MONGO_URI)
@@ -18,10 +22,12 @@ mongoose.connect(process.env.MONGO_URI)
 .catch(err => console.log(err))
 
 app.use("/api/auth", authRoutes)
-app.use("/api/blog",blogRoutes )
 app.use("/api/notifications", notificationRoutes)
 app.use("/api/user", userRoutes)
 
+// serve uploaded images
+app.use("/uploads", express.static("uploads"))
+
 app.listen(8080, () => {
   console.log("Server running on 8080")
-});
+})

@@ -2,18 +2,30 @@ import express from "express";
 import Blog from "../models/blog.js";
 import Notification from "../models/notifications.js";
 import auth from "../middlewares/profileauth.js";
+import upload from '../middlewares/upload.js'
 
 const router = express.Router();
 
-router.post("/",auth, async (req,res)=>{
-  const blog = await Blog.create({
-    image: req.body.image,
-    desc: req.body.desc,
-    authorName: req.user.name,
-    authorEmail: req.user.email
-  });
-  res.json(blog);
-});
+router.post(
+  "/",
+  auth,
+  upload.single("image"),
+  async (req, res) => {
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+
+    const blog = await Blog.create({
+      image: imageUrl,
+      desc: req.body.desc,
+      title: req.body.title,
+      tags: req.body.tags,
+      authorName: req.user.name,
+      authorEmail: req.user.email
+    });
+
+    res.json(blog);
+  }
+);
 
 router.get("/", async (req,res)=>{
   const blogs = await Blog.find().sort({ createdAt: -1 });

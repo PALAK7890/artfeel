@@ -14,39 +14,44 @@ export default function UploadBlog() {
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
+
 const publishBlog = async () => {
   if (!image || !content) {
     alert("Please upload image and write something");
     return;
   }
 
-  const publishBlog = async () => {
-  if (!image || !content) {
-    alert("Please upload image and write something");
-    return;
+  try {
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("desc", content);
+    formData.append("title", title);
+    formData.append("tags", tags);
+
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Upload failed");
+      return;
+    }
+
+    navigate("/profile");   
+
+  } catch (err) {
+    alert("Something went wrong");
   }
-
-  const token = localStorage.getItem("token");
-
-  const formData = new FormData();
-  formData.append("image", image);
-  formData.append("desc", content);
-  formData.append("title", title);
-  formData.append("tags", tags);
-
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    body: formData
-  });
-
-  const data = await res.json();
-  navigate("/explore");
 };
 
-};
 
   return (
     <div className="blog-upload">
@@ -75,15 +80,32 @@ const publishBlog = async () => {
   onChange={(e)=>setTags(e.target.value)}
 />
         </div>
+<div className="blog-image">
+  {preview ? (
+    <img src={preview} alt="preview" />
+  ) : (
+    <div className="img-placeholder">Upload cover image</div>
+  )}
 
-        <div className="blog-image">
-          {preview ? (
-            <img src={preview} alt="preview" />
-          ) : (
-            <div className="img-placeholder">Upload cover image</div>
-          )}
-          <input type="file" accept="image/*" onChange={handleImage} />
-        </div>
+  <button
+    className="upload-btn inside"
+    onClick={() => document.getElementById("fileInput").click()}
+  >
+    Choose Image
+  </button>
+</div>
+
+<input
+  id="fileInput"
+  type="file"
+  accept="image/*"
+  onChange={handleImage}
+  style={{ display: "none" }}
+/>
+
+
+
+
 
       </div>
 

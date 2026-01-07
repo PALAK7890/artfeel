@@ -21,12 +21,24 @@ const [saving, setSaving] = useState(false)
   const [blogs, setBlogs] = useState([])
 
 useEffect(() => {
-  const allBlogs = JSON.parse(localStorage.getItem("blogs")) || []
-  const myBlogs = allBlogs.filter(
-    (b) => b.user === storedUser?.name
-  );
-  setBlogs(myBlogs)
+  const fetchBlogs = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"))
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/blog/email/${user.email}`
+      )
+
+      const data = await res.json()
+      setBlogs(data)
+    } catch (err) {
+      console.log("Failed to load blogs")
+    }
+  }
+
+  fetchBlogs()
 }, [])
+
 
 
 
@@ -115,7 +127,8 @@ const saveProfile = async () => {
         <div className="profile-gallery">
           {blogs.map((blog) => (
             <div className="art-box" key={blog._id}>
-              <img src={blog.image} />
+             <img src={`${import.meta.env.VITE_API_URL}${blog.image}`} />
+
             </div>
           ))}
         </div>

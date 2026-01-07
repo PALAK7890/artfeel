@@ -20,7 +20,7 @@ export default function Explore() {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/like/${id}`, {
       method: "POST",
       headers: {
-        Authorization: localStorage.getItem("token")
+        Authorization: `Bearer ${localStorage.getItem("token")}`
       }
     });
 
@@ -40,7 +40,7 @@ export default function Explore() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify({ text: commentText })
       }
@@ -64,21 +64,23 @@ export default function Explore() {
               key={post._id}
               onClick={() => setSelectedPost(post)}
             >
-              <img src={post.image} className="card-img" />
+              <img src={`${import.meta.env.VITE_API_URL}${post.image}`} />
 
               <div className="card-info">
                 <p>{post.desc}</p>
 
                 <div className="card-bottom">
                   <div className="stats">
-                    ❤️ {post.likes.length} 💬 {post.comments.length}
+                    ❤️ {post.likes?.length || 0} 💬 {post.comments?.length || 0}
                   </div>
 
                   <span
                     className="author"
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/user/${post.authorEmail}`);
+                      if (post.authorEmail) {
+  navigate(`/user/${post.authorEmail}`)
+}
                     }}
                   >
                     @{post.authorName}
@@ -96,16 +98,17 @@ export default function Explore() {
           <div className="modal-card">
             <span className="close-btn" onClick={() => setSelectedPost(null)}>✕</span>
 
-            <img src={selectedPost.image} />
+            <img src={`${import.meta.env.VITE_API_URL}${selectedPost.image}`} />
+
 
             <div className="modal-content">
               <p>{selectedPost.desc}</p>
 
               <div className="modal-actions">
                 <span onClick={() => likeBlog(selectedPost._id)}>
-                  ❤️ {selectedPost.likes.length}
+                  ❤️ {selectedPost.likes?.length || 0}
                 </span>
-                <span>💬 {selectedPost.comments.length}</span>
+                <span>💬 {selectedPost.comments?.length || 0}</span>
               </div>
 
               <div className="comments">
