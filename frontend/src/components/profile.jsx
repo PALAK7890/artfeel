@@ -77,6 +77,25 @@ const saveProfile = async () => {
 
   setSaving(false)
 };
+const deleteBlog = async (id) => {
+  if (!window.confirm("Delete this post?")) return
+
+  try {
+    const token = localStorage.getItem("token")
+
+    await fetch(`${import.meta.env.VITE_API_URL}/api/blog/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    // remove from UI
+    setBlogs(blogs.filter((b) => b._id !== id))
+  } catch (err) {
+    alert("Failed to delete")
+  }
+}
 
 
 
@@ -137,9 +156,22 @@ const saveProfile = async () => {
         <div className="profile-gallery">
           {blogs.map((blog) => (
             <div className="art-box" key={blog._id}>
-             <img src={`${import.meta.env.VITE_API_URL}${blog.image}`} />
+  <img
+    src={
+      blog.image?.startsWith("http")
+        ? blog.image
+        : `${import.meta.env.VITE_API_URL}${blog.image}`
+    }
+  />
 
-            </div>
+  <button
+    className="delete-post"
+    onClick={() => deleteBlog(blog._id)}
+  >
+    🗑
+  </button>
+</div>
+
           ))}
         </div>
       )}

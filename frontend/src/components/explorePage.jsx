@@ -10,13 +10,12 @@ const email = user?.email
   const [commentText, setCommentText] = useState("");
   const navigate = useNavigate();
 
-  // Fetch all blogs for Explore
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/blog/email/${email}`)
-
-      .then(res => res.json())
-      .then(data => setPosts(data));
-  }, []);
+ 
+useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_URL}/api/blog`)
+    .then(res => res.json())
+    .then(data => setPosts(data))
+}, [])
 
   // Like blog
   const likeBlog = async (id) => {
@@ -53,6 +52,34 @@ const email = user?.email
     setSelectedPost(updated);
     setCommentText("");
   };
+  const deletePost = async (id) => {
+  if (!window.confirm("Delete this post?")) return
+
+  try {
+    const token = localStorage.getItem("token")
+
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    if (!res.ok) {
+      const err = await res.json()
+      alert(err.error || "Delete failed")
+      return
+    }
+
+    // remove from UI
+    setPosts(posts.filter(p => p._id !== id))
+    setSelectedPost(null)
+
+  } catch (err) {
+    alert("Server error")
+  }
+}
+
 
   return (
     <div className="explore-page">
@@ -67,7 +94,14 @@ const email = user?.email
               key={post._id}
               onClick={() => setSelectedPost(post)}
             >
-              <img src={`${import.meta.env.VITE_API_URL}${post.image}`} />
+              <img
+  src={
+    post.image?.startsWith("http")
+      ? post.image
+      : `${import.meta.env.VITE_API_URL}${post.image}`
+  }
+  className="card-img"
+/>
 
               <div className="card-info">
                 <p>{post.desc}</p>
@@ -75,6 +109,17 @@ const email = user?.email
                 <div className="card-bottom">
                   <div className="stats">
                     ❤️ {post.likes?.length || 0} 💬 {post.comments?.length || 0}
+                    {post.authorEmail === email && (
+  <span
+    className="delete-btn"
+    onClick={(e) => {
+      e.stopPropagation()
+      deletePost(post._id)
+    }}
+  >
+    🗑
+  </span>
+)}
                   </div>
 
                   <span
@@ -101,7 +146,13 @@ const email = user?.email
           <div className="modal-card">
             <span className="close-btn" onClick={() => setSelectedPost(null)}>✕</span>
 
-            <img src={`${import.meta.env.VITE_API_URL}${selectedPost.image}`} />
+          <img
+  src={
+    selectedPost.image?.startsWith("http")
+      ? selectedPost.image
+      : `${import.meta.env.VITE_API_URL}${selectedPost.image}`
+  }
+/>
 
 
             <div className="modal-content">
@@ -112,6 +163,14 @@ const email = user?.email
                   ❤️ {selectedPost.likes?.length || 0}
                 </span>
                 <span>💬 {selectedPost.comments?.length || 0}</span>
+                {selectedPost.authorEmail === email && (
+  <span
+    style={{ marginLeft: "20px", color: "red", cursor: "pointer" }}
+    onClick={() => deletePost(selectedPost._id)}
+  >
+    🗑 Delete
+  </span>
+)}
               </div>
 
               <div className="comments">

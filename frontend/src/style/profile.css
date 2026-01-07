@@ -86,7 +86,29 @@
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+  position :relative;
 }
+.art-box {
+  position: relative;
+}
+
+.delete-post {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.delete-post:hover {
+  background: red;
+}
+
 
 .art-box img {
   width: 100%;

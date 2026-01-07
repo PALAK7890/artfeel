@@ -15,7 +15,7 @@ router.post(
     const imageUrl = `/uploads/${req.file.filename}`;
 
     const blog = await Blog.create({
-      image: imageUrl,
+       image: req.file.path,    
       desc: req.body.desc,
       title: req.body.title,
       tags: req.body.tags,
@@ -92,5 +92,26 @@ router.get("/featured", async (req,res)=>{
 
   res.json(blogs);
 });
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id)
+
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found" })
+    }
+
+    // Only author can delete
+    if (blog.authorEmail !== req.user.email) {
+      return res.status(403).json({ error: "Not allowed" })
+    }
+
+    await blog.deleteOne()
+    res.json({ message: "Deleted" })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Delete failed" })
+  }
+})
+
 
 export default router;

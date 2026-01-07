@@ -40,11 +40,6 @@
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
-.blog-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 .img-placeholder {
   width: 100%;
@@ -113,8 +108,17 @@ display: none;
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
+    z-index: 2;
 }
 
 .upload-btn.inside:hover {
   background: rgba(0,0,0,0.85);
 }
+.blog-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  position: relative;
+}
+
