@@ -8,6 +8,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -35,8 +37,11 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      alert("Welcome back to ArtFeel 🎨💖");
-      navigate("/");
+     setToast(true);
+setTimeout(() => {
+  navigate("/");
+}, 1500);
+
 
     } catch (err) {
       alert("Server error");
@@ -86,6 +91,12 @@ export default function Login() {
           Don’t have an account? Sign up
         </span>
       </div>
+      {toast && (
+  <div className="login-toast">
+    🎉 Logged in successfully!
+  </div>
+)}
+
     </div>
   );
 }

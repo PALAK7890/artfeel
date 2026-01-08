@@ -8,6 +8,8 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [toast, setToast] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,11 +24,14 @@ export default function Register() {
     const data = await res.json();
 
     if (res.ok) {
-      alert("Account created 💖");
-      navigate("/login");
-    } else {
-      alert(data);
-    }
+  setToast(true);
+  setTimeout(() => {
+    navigate("/login");
+  }, 1500);
+} else {
+  alert(data.error || "Signup failed");
+}
+
   };
 
   return (
@@ -72,6 +77,12 @@ export default function Register() {
           <span onClick={() => navigate("/login")}>Login</span>
         </div>
       </div>
+      {toast && (
+  <div className="login-toast">
+    🎉 Account created successfully!
+  </div>
+)}
+
     </div>
   );
 }

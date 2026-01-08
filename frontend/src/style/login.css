@@ -139,3 +139,26 @@ body {
   color: #b388eb;
   text-decoration: underline;
 }
+.login-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #333;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+  animation: toastSlide 0.4s ease, toastFade 0.4s ease 1.2s forwards;
+  z-index: 9999;
+}
+
+@keyframes toastSlide {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toastFade {
+  to { opacity: 0; }
+}
