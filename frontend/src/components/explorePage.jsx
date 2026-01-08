@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../style/explore.css";
+import { FaHeart, FaCommentDots } from "react-icons/fa";
+
 
 export default function Explore() {
   const user = JSON.parse(localStorage.getItem("user"))
@@ -9,6 +11,9 @@ const email = user?.email
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const [posting, setPosting] = useState(false); 
+ const [reaction, setReaction] = useState("");
+
+
   const navigate = useNavigate();
 
  
@@ -31,6 +36,10 @@ useEffect(() => {
 
     setPosts(posts.map(p => p._id === updated._id ? updated : p));
     setSelectedPost(updated);
+setReaction("like");
+setTimeout(() => setReaction(""), 1200);
+
+
   };
 
   // Comment
@@ -60,7 +69,10 @@ const postComment = async () => {
     setPosts(posts.map(p => p._id === data._id ? data : p));
     setCommentText("");
 
-    alert("✅ Your comment is posted");
+setReaction("comment");
+setTimeout(() => setReaction(""), 1200);
+
+
   } catch (err) {
     alert("Server error");
   }
@@ -125,7 +137,9 @@ const postComment = async () => {
 
                 <div className="card-bottom">
                   <div className="stats">
-                    ❤️ {post.likes?.length || 0} 💬 {post.comments?.length || 0}
+                   <FaHeart className="stat-icon heart" /> {post.likes?.length || 0}
+<FaCommentDots className="stat-icon comment" /> {post.comments?.length || 0}
+
                     {post.authorEmail === email && (
   <span
     className="delete-btn"
@@ -176,18 +190,13 @@ const postComment = async () => {
               <p>{selectedPost.desc}</p>
 
               <div className="modal-actions">
-                <span onClick={() => likeBlog(selectedPost._id)}>
-                  ❤️ {selectedPost.likes?.length || 0}
-                </span>
-                <span>💬 {selectedPost.comments?.length || 0}</span>
-                {selectedPost.authorEmail === email && (
-  <span
-    style={{ marginLeft: "20px", color: "red", cursor: "pointer" }}
-    onClick={() => deletePost(selectedPost._id)}
-  >
-    🗑 Delete
-  </span>
-)}
+                <span>
+  <FaHeart /> {selectedPost.likes?.length || 0}
+</span>
+<span>
+  <FaCommentDots /> {selectedPost.comments?.length || 0}
+</span>
+
               </div>
 
               <div className="comments">
@@ -213,6 +222,13 @@ const postComment = async () => {
           </div>
         </div>
       )}
+    {reaction && (
+  <div className={`reaction-float ${reaction}`}>
+    {reaction === "like" ? <div className="heart"></div> : <div className="comment-bubble"></div>}
+  </div>
+)}
+
+
 
     </div>
   );

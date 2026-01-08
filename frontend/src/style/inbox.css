@@ -46,3 +46,9 @@
   font-size: 13px;
   color: #777;
 }
+.notif-comment {
+  display: block;
+  margin-top: 6px;
+  font-style: italic;
+  opacity: 0.85;
+}

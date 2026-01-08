@@ -7,8 +7,9 @@ export default function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const logout = () => {
-    localStorage.clear();
-    navigate("/login");
+    localStorage.removeItem("token");
+localStorage.removeItem("user");
+navigate("/login");
   };
 
   return (

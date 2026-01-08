@@ -78,13 +78,14 @@ router.post("/comment/:id", auth, async (req, res) => {
     });
 
     if (blog.authorEmail !== req.user.email) {
-      await Notification.create({
-        userEmail: blog.authorEmail,
-        sender: req.user.name,
-        post: blog._id,
-        type: "comment",
-        message: "commented on your post"
-      });
+     await Notification.create({
+  userEmail: blog.authorEmail,
+  sender: req.user.name,
+  post: blog._id,
+  type: "comment",
+  message: comment        // 👈 store the actual comment
+});
+
     }
 
     await blog.save();

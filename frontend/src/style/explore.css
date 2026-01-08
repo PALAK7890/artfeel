@@ -124,12 +124,121 @@
   outline: none;
 }
 
-/* Close button */
 .close-btn {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 22px;
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  z-index: 9999;
+  font-size: 28px;
+  color: white;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
+.close-btn:hover {
+  background: rgba(255, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+/* Floating container */
+.reaction-float {
+  position: fixed;
+  right: 40px;
+  bottom: 80px;
+  animation: floatUp 1.2s ease forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Heart */
+.heart {
+  width: 40px;
+  height: 40px;
+  background: #ff2d55;
+  position: relative;
+  transform: rotate(-45deg);
+  animation: pop 0.3s ease;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  width: 40px;
+  height: 40px;
+  background: #ff2d55;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.heart::before {
+  top: -20px;
+  left: 0;
+}
+
+.heart::after {
+  left: 20px;
+  top: 0;
+}
+
+/* Comment bubble */
+.comment-bubble {
+  width: 42px;
+  height: 32px;
+  background: white;
+  border-radius: 16px;
+  position: relative;
+  box-shadow: 0 0 15px rgba(255,255,255,0.5);
+}
+
+.comment-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 10px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  transform: rotate(45deg);
+}
+
+/* Animations */
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-160px) scale(1);
+  }
+}
+
+@keyframes pop {
+  from { transform: scale(0.5) rotate(-45deg); }
+  to { transform: scale(1) rotate(-45deg); }
+}
+
+
+.stat-icon {
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.stat-icon.heart {
+  color: #ff2d55;
+}
+
+.stat-icon.comment {
+  color: #ccc;
+}

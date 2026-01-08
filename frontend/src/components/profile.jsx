@@ -4,7 +4,8 @@ import { useState ,useEffect} from "react"
 
 
 export default function Profile() {
-  const storedUser = JSON.parse(localStorage.getItem("user"))  || {}
+  const storedUser = JSON.parse(localStorage.getItem("profile")) || JSON.parse(localStorage.getItem("user")) || {}
+
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
@@ -66,7 +67,8 @@ const saveProfile = async () => {
 
     const data = await res.json()
 
-    localStorage.setItem("user", JSON.stringify(data))
+    localStorage.setItem("profile", JSON.stringify(data))
+
     setUser(data)
     setPreview(data.avatar)
 

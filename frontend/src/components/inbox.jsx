@@ -32,8 +32,16 @@ export default function Inbox() {
 
             <div className="notif-content">
               <p>
-  <b>{n.sender?.name}</b> {n.message}
-  <b> "{n.post?.title}"</b>
+ <p>
+  <b>{n.sender}</b>{" "}
+  {n.type === "like" ? "liked" : "commented"} on your post
+  <b>"{n.post?.title}"</b>
+
+  {n.type === "comment" && (
+    <span className="notif-comment"> — {n.message}</span>
+  )}
+</p>
+
 </p>
               <span>{dayjs(n.createdAt).fromNow()}</span>
             </div>
