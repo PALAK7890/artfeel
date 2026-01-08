@@ -8,6 +8,7 @@ const email = user?.email
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
+  const [posting, setPosting] = useState(false); 
   const navigate = useNavigate();
 
  
@@ -33,25 +34,41 @@ useEffect(() => {
   };
 
   // Comment
-  const postComment = async () => {
-    if (!commentText) return;
+const postComment = async () => {
+  if (posting) return;
+  setPosting(true);
 
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/blog/comment/${selectedPost._id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify({ text: commentText })
-      }
-    );
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/comment/${selectedPost._id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify({ comment: commentText })
+    });
 
-    const updated = await res.json();
-    setSelectedPost(updated);
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Comment failed");
+      setPosting(false);
+      return;
+    }
+
+    setSelectedPost(data);
+    setPosts(posts.map(p => p._id === data._id ? data : p));
     setCommentText("");
-  };
+
+    alert("✅ Your comment is posted");
+  } catch (err) {
+    alert("Server error");
+  }
+
+  setPosting(false);
+};
+
+
   const deletePost = async (id) => {
   if (!window.confirm("Delete this post?")) return
 
@@ -174,7 +191,7 @@ useEffect(() => {
               </div>
 
               <div className="comments">
-                {selectedPost.comments.map((c, i) => (
+                {selectedPost.comments?.map((c, i) => (
                   <p key={i}><b>{c.userName}</b>: {c.text}</p>
                 ))}
               </div>
@@ -185,7 +202,12 @@ useEffect(() => {
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Write a comment..."
                 />
-                <button onClick={postComment}>Post</button>
+                <button 
+  onClick={postComment}
+  disabled={!commentText.trim()}
+>
+  Post
+</button>
               </div>
             </div>
           </div>

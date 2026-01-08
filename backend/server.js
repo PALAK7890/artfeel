@@ -13,9 +13,10 @@ const app = express()
 app.use(cors())
 
 // ❗ DO NOT put express.json() before multer routes
+app.use(express.json())
 app.use("/api/blog", blogRoutes)
 
-app.use(express.json())
+
 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))

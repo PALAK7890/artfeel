@@ -6,6 +6,7 @@ export default function UploadBlog() {
   const [preview, setPreview] = useState(null)
   const [content, setContent] = useState("")
   const [title, setTitle] = useState("")
+  const [showCongrats, setShowCongrats] = useState(false);
   const [tags, setTags] = useState("")
   const navigate = useNavigate()
 
@@ -45,7 +46,7 @@ const publishBlog = async () => {
       return;
     }
 
-    navigate("/profile");   
+    setShowCongrats(true); 
 
   } catch (err) {
     alert("Something went wrong");
@@ -119,6 +120,18 @@ const publishBlog = async () => {
 <button className="publish-btn" onClick={publishBlog}>
   Publish Blog
 </button>
+{showCongrats && (
+  <div className="glass-overlay">
+    <div className="glass-card">
+      <h2>🎉 Congratulations!</h2>
+      <p>Your blog has been successfully posted.</p>
+      <button onClick={() => navigate("/profile")}>
+        Go to Profile
+      </button>
+    </div>
+  </div>
+)}
+
 
     </div>
   );
