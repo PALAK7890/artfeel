@@ -1,42 +1,40 @@
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "../style/inbox.css";
 
-
-const notifications = [
-  {
-    id: 1,
-    type: "like",
-    user: "Aarav",
-    post: "Dream Girl Artwork",
-    time: "2 min ago",
-  },
-  {
-    id: 2,
-    type: "comment",
-    user: "Meera",
-    post: "Soft Pastel Portrait",
-    time: "10 min ago",
-  },
-];
+dayjs.extend(relativeTime);
 
 export default function Inbox() {
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/notifications`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then(res => res.json())
+      .then(data => setNotifications(data));
+  }, []);
+
   return (
     <div className="inbox-wrapper">
       <h2>Inbox</h2>
 
       <div className="notification-list">
         {notifications.map((n) => (
-          <div className="notification-card" key={n.id}>
+          <div className="notification-card" key={n._id}>
             <div className="notif-left">
               {n.type === "like" ? "❤️" : "💬"}
             </div>
 
             <div className="notif-content">
               <p>
-                <b>{n.user}</b>{" "}
-                {n.type === "like" ? "liked" : "commented on"} your post
-                <b> "{n.post}"</b>
+                <b>{n.sender.name}</b> {n.message}
+                <b> "{n.post.title}"</b>
               </p>
-              <span>{n.time}</span>
+              <span>{dayjs(n.createdAt).fromNow()}</span>
             </div>
           </div>
         ))}

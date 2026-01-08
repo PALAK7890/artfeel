@@ -37,25 +37,23 @@ router.get("/email/:email", async (req,res)=>{
   res.json(blogs);
 });
 
-router.post("/like/:id", auth, async (req,res)=>{
+
+router.post("/like/:id", auth, async (req, res) => {
   const blog = await Blog.findById(req.params.id);
 
-  const alreadyLiked = blog.likes.includes(req.user.id);
+  blog.likes.push(req.user.id);
+  await blog.save();
 
-  if (alreadyLiked) {
-    blog.likes.pull(req.user.id);
-  } else {
-    blog.likes.push(req.user.id);
-
+  if (blog.user.toString() !== req.user.id) {
     await Notification.create({
-      userEmail: blog.authorEmail,
-      fromUser: req.user.name,
+      user: blog.user,       // post owner
+      sender: req.user.id,   // who liked
+      post: blog._id,
       type: "like",
-      blogId: blog._id
+      message: "liked your post"
     });
   }
 
-  await blog.save();
   res.json(blog);
 });
 
@@ -66,13 +64,13 @@ router.post("/comment/:id", auth, async (req,res)=>{
     userName: req.user.name,
     text: req.body.text
   });
-
-  await Notification.create({
-    userEmail: blog.authorEmail,
-    fromUser: req.user.name,
-    type: "comment",
-    blogId: blog._id
-  });
+await Notification.create({
+  user: blog.user,
+  sender: req.user.id,
+  post: blog._id,
+  type: "comment",
+  message: "commented on your post"
+});
 
   await blog.save();
   res.json(blog);
@@ -112,6 +110,15 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).json({ error: "Delete failed" })
   }
 })
+router.get("/notifications", auth, async (req, res) => {
+  const data = await Notification.find({ user: req.user.id })
+    .populate("sender", "name")
+    .populate("post", "title")
+    .sort({ createdAt: -1 });
+
+  res.json(data);
+});
+
 
 
 export default router;
