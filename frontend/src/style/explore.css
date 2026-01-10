@@ -20,6 +20,7 @@
   background: white;
   border-radius: 25px;
   overflow: hidden;
+  height: 380px;     
   box-shadow: 0 20px 40px rgba(0,0,0,0.08);
   transition: 0.3s;
 }
@@ -44,6 +45,11 @@
   font-size: 0.95rem;
   color: #444;
   margin-bottom: 12px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;     /* show only 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden; 
 }
 
 /* Likes + Author row */
@@ -93,6 +99,7 @@
   background: white;
   border-radius: 25px;
   width: 70%;
+  height: 90vh;  
   max-width: 800px;
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0,0,0,0.2);
@@ -114,12 +121,38 @@
   font-size: 1rem;
   color: #a88fac;
 }
+.modal-content > p,
+.comments {
+  overflow-y: auto;
+}
+
+/* Description */
+.modal-content > p {
+  flex: 0 0 auto;
+  max-height: 150px;            /* description scrolls if long */
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: #000000;
+}
+
+/* Comments area */
+.comments {
+  flex: 1;                      /* takes remaining height */
+  margin-bottom: 15px;
+}
+
+/* Comment input stays fixed */
+.comment-box {
+  display: flex;
+  gap: 10px;
+}
 
 .modal-content input {
   width: 100%;
   padding: 12px 18px;
   border-radius: 20px;
   border: none;
+  overflow: hidden;  
   background: #f7f6f3;
   outline: none;
 }
