@@ -81,39 +81,55 @@
 }
 
 .art-box {
-  background: white;
-  height: 220px;
+  position: relative;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-  position :relative
-}
-.art-box {
-  position: relative;
-}
-
-.delete-post {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
   cursor: pointer;
 }
 
-.delete-post:hover {
-  background: red;
-}
-
-
+/* Image */
 .art-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+/* Delete button */
+.delete-post {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  color: white;
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* Show only on hover */
+.art-box:hover .delete-post {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hover effect */
+.delete-post:hover {
+  background: #ff4d6d;
 }
 
 /* Responsive */

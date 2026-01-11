@@ -180,82 +180,57 @@
   background: rgba(255, 0, 0, 0.7);
   transform: scale(1.1);
 }
-/* Floating container */
 .reaction-float {
   position: fixed;
-  right: 40px;
-  bottom: 80px;
-  animation: floatUp 1.2s ease forwards;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   pointer-events: none;
   z-index: 9999;
 }
 
-/* Heart */
-.heart {
-  width: 40px;
-  height: 40px;
-  background: #ff2d55;
-  position: relative;
-  transform: rotate(-45deg);
-  animation: pop 0.3s ease;
+/* ❤️ Heart */
+.reaction-heart {
+  font-size: 120px;
+  color: #ff4d6d;
+  animation: popFade 1.2s ease forwards;
 }
 
-.heart::before,
-.heart::after {
-  content: "";
-  width: 40px;
-  height: 40px;
-  background: #ff2d55;
-  border-radius: 50%;
-  position: absolute;
+/* 💬 Comment */
+.reaction-comment {
+  font-size: 100px;
+  color: #4dabf7;
+  animation: popFade 1.2s ease forwards;
 }
 
-.heart::before {
-  top: -20px;
-  left: 0;
-}
-
-.heart::after {
-  left: 20px;
-  top: 0;
-}
-
-/* Comment bubble */
-.comment-bubble {
-  width: 42px;
-  height: 32px;
-  background: white;
-  border-radius: 16px;
-  position: relative;
-  box-shadow: 0 0 15px rgba(255,255,255,0.5);
-}
-
-.comment-bubble::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 10px;
-  width: 12px;
-  height: 12px;
-  background: white;
-  transform: rotate(45deg);
-}
-
-/* Animations */
-@keyframes floatUp {
+@keyframes popFade {
   0% {
+    transform: scale(0.3);
     opacity: 0;
-    transform: translateY(0) scale(0.5);
   }
-  20% {
-    opacity: 1;
+  40% {
     transform: scale(1.2);
+    opacity: 1;
   }
   100% {
+    transform: scale(1.8);
     opacity: 0;
-    transform: translateY(-160px) scale(1);
   }
 }
+.card-like {
+  cursor: pointer;
+  color: #ff4d6d;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-like:hover {
+  transform: scale(1.1);
+}
+
+
 
 @keyframes pop {
   from { transform: scale(0.5) rotate(-45deg); }

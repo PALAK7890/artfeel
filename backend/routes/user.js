@@ -8,6 +8,13 @@ router.get("/email/:email", async (req,res)=>{
   const user = await User.findOne({ email: req.params.email }).select("-password");
   res.json(user);
 });
+router.get("/profile", auth, async (req, res) => {
+  try {
+    res.json(req.user); // comes from auth middleware
+  } catch (err) {
+    res.status(500).json({ error: "Failed to load profile" });
+  }
+});
 router.put(
   "/profile",
   auth,

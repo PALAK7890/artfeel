@@ -10,6 +10,21 @@ router.post("/signin", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // Check missing fields
+    if (!name || !email || !password) {
+      return res.status(400).json("All fields are required");
+    }
+
+    // Password rule
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json(
+        "Password must have 1 uppercase, 1 number, 1 special character and be at least 8 characters long"
+      );
+    }
+
+    // Check if user already exists
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json("User already exists");
 
@@ -21,11 +36,14 @@ router.post("/signin", async (req, res) => {
       password: hashed
     });
 
-    res.json(user);
+    res.status(201).json("Account created");
   } catch (err) {
+    console.error(err);
     res.status(500).json("Server error");
   }
 });
+
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 

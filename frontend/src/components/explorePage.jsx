@@ -3,25 +3,25 @@ import { useNavigate } from "react-router-dom";
 import "../style/explore.css";
 import { FaHeart, FaCommentDots } from "react-icons/fa";
 
-
 export default function Explore() {
-  const user = JSON.parse(localStorage.getItem("user"))
-const email = user?.email
-  const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [commentText, setCommentText] = useState("");
-  const [posting, setPosting] = useState(false); 
- const [reaction, setReaction] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const email = user?.email;
 
+  const [posts, setPosts] = useState([]);
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [commentText, setCommentText] = useState("");
+  const [posting, setPosting] = useState(false);
+  const [reaction, setReaction] = useState("");
 
   const navigate = useNavigate();
 
- 
-useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_URL}/api/blog`)
-    .then(res => res.json())
-    .then(data => setPosts(data))
-}, [])
+  const selectedPost = posts.find(p => p._id === selectedPostId);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/blog`)
+      .then(res => res.json())
+      .then(data => setPosts(data));
+  }, []);
 
   // Like blog
   const likeBlog = async (id) => {
@@ -34,85 +34,56 @@ useEffect(() => {
 
     const updated = await res.json();
 
-    setPosts(posts.map(p => p._id === updated._id ? updated : p));
-    setSelectedPost(updated);
-setReaction("like");
-setTimeout(() => setReaction(""), 1200);
+    setPosts(prev =>
+      prev.map(p => (p._id === updated._id ? updated : p))
+    );
 
-
+    setReaction("like");
+    setTimeout(() => setReaction(""), 1200);
   };
 
   // Comment
-const postComment = async () => {
-  if (posting) return;
-  setPosting(true);
+  const postComment = async () => {
+    if (posting || !selectedPost) return;
+    setPosting(true);
 
-  try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/comment/${selectedPost._id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({ comment: commentText })
-    });
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/blog/comment/${selectedPost._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          },
+          body: JSON.stringify({ comment: commentText })
+        }
+      );
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      alert(data.error || "Comment failed");
-      setPosting(false);
-      return;
-    }
-
-    setSelectedPost(data);
-    setPosts(posts.map(p => p._id === data._id ? data : p));
-    setCommentText("");
-
-setReaction("comment");
-setTimeout(() => setReaction(""), 1200);
-
-
-  } catch (err) {
-    alert("Server error");
-  }
-
-  setPosting(false);
-};
-
-
-  const deletePost = async (id) => {
-  if (!window.confirm("Delete this post?")) return
-
-  try {
-    const token = localStorage.getItem("token")
-
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blog/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`
+      if (!res.ok) {
+        alert(data.error || "Comment failed");
+        setPosting(false);
+        return;
       }
-    })
 
-    if (!res.ok) {
-      const err = await res.json()
-      alert(err.error || "Delete failed")
-      return
+      setPosts(prev =>
+        prev.map(p => (p._id === data._id ? data : p))
+      );
+
+      setCommentText("");
+      setReaction("comment");
+      setTimeout(() => setReaction(""), 1200);
+    } catch (err) {
+      alert("Server error");
     }
 
-    // remove from UI
-    setPosts(posts.filter(p => p._id !== id))
-    setSelectedPost(null)
-
-  } catch (err) {
-    alert("Server error")
-  }
-}
-
+    setPosting(false);
+  };
 
   return (
     <div className="explore-page">
-
       <div className={selectedPost ? "blur-bg" : ""}>
         <h2 className="explore-title">Explore</h2>
 
@@ -121,36 +92,34 @@ setTimeout(() => setReaction(""), 1200);
             <div
               className="explore-card"
               key={post._id}
-              onClick={() => setSelectedPost(post)}
+              onClick={() => setSelectedPostId(post._id)}
             >
               <img
-  src={
-    post.image?.startsWith("http")
-      ? post.image
-      : `${import.meta.env.VITE_API_URL}${post.image}`
-  }
-  className="card-img"
-/>
+                src={
+                  post.image?.startsWith("http")
+                    ? post.image
+                    : `${import.meta.env.VITE_API_URL}${post.image}`
+                }
+                className="card-img"
+              />
 
               <div className="card-info">
                 <p>{post.desc}</p>
 
                 <div className="card-bottom">
                   <div className="stats">
-                   <FaHeart className="stat-icon heart" /> {post.likes?.length || 0}
-<FaCommentDots className="stat-icon comment" /> {post.comments?.length || 0}
+                    <span
+                      className="card-like"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        likeBlog(post._id);
+                      }}
+                    >
+                      <FaHeart /> {post.likes?.length || 0}
+                    </span>
 
-                    {post.authorEmail === email && (
-  <span
-    className="delete-btn"
-    onClick={(e) => {
-      e.stopPropagation()
-      deletePost(post._id)
-    }}
-  >
-    🗑
-  </span>
-)}
+                    <FaCommentDots className="stat-icon comment" />{" "}
+                    {post.comments?.length || 0}
                   </div>
 
                   <span
@@ -158,8 +127,8 @@ setTimeout(() => setReaction(""), 1200);
                     onClick={(e) => {
                       e.stopPropagation();
                       if (post.authorEmail) {
-  navigate(`/user/${post.authorEmail}`)
-}
+                        navigate(`/user/${post.authorEmail}`);
+                      }
                     }}
                   >
                     @{post.authorName}
@@ -175,33 +144,35 @@ setTimeout(() => setReaction(""), 1200);
       {selectedPost && (
         <div className="modal-overlay">
           <div className="modal-card">
-            <span className="close-btn" onClick={() => setSelectedPost(null)}>✕</span>
+            <span className="close-btn" onClick={() => setSelectedPostId(null)}>
+              ✕
+            </span>
 
-          <img
-  src={
-    selectedPost.image?.startsWith("http")
-      ? selectedPost.image
-      : `${import.meta.env.VITE_API_URL}${selectedPost.image}`
-  }
-/>
-
+            <img
+              src={
+                selectedPost.image?.startsWith("http")
+                  ? selectedPost.image
+                  : `${import.meta.env.VITE_API_URL}${selectedPost.image}`
+              }
+            />
 
             <div className="modal-content">
               <p>{selectedPost.desc}</p>
 
               <div className="modal-actions">
+                <span onClick={() => likeBlog(selectedPost._id)} className="modal-like">
+                  <FaHeart /> {selectedPost.likes?.length || 0}
+                </span>
                 <span>
-  <FaHeart /> {selectedPost.likes?.length || 0}
-</span>
-<span>
-  <FaCommentDots /> {selectedPost.comments?.length || 0}
-</span>
-
+                  <FaCommentDots /> {selectedPost.comments?.length || 0}
+                </span>
               </div>
 
               <div className="comments">
                 {selectedPost.comments?.map((c, i) => (
-                  <p key={i}><b>{c.userName}</b>: {c.text}</p>
+                  <p key={i}>
+                    <b>{c.userName}</b>: {c.text}
+                  </p>
                 ))}
               </div>
 
@@ -211,25 +182,24 @@ setTimeout(() => setReaction(""), 1200);
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Write a comment..."
                 />
-                <button 
-  onClick={postComment}
-  disabled={!commentText.trim()}
->
-  Post
-</button>
+                <button onClick={postComment} disabled={!commentText.trim()}>
+                  Post
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
-    {reaction && (
-  <div className={`reaction-float ${reaction}`}>
-    {reaction === "like" ? <div className="heart"></div> : <div className="comment-bubble"></div>}
-  </div>
-)}
 
-
-
+      {reaction && (
+        <div className="reaction-float">
+          {reaction === "like" ? (
+            <FaHeart className="reaction-heart" />
+          ) : (
+            <FaCommentDots className="reaction-comment" />
+          )}
+        </div>
+      )}
     </div>
   );
 }

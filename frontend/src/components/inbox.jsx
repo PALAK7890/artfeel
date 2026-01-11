@@ -35,7 +35,7 @@ export default function Inbox() {
  <p>
   <b>{n.sender}</b>{" "}
   {n.type === "like" ? "liked" : "commented"} on your post
-  <b>"{n.post?.title}"</b>
+  <b>{n.post?.title}</b>
 
   {n.type === "comment" && (
     <span className="notif-comment"> — {n.message}</span>
