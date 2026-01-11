@@ -10,7 +10,10 @@ import userRoutes from "./routes/user.js"
 dotenv.config()
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: "https://artfeel.vercel.app",
+  credentials: true
+}));
 
 // ❗ DO NOT put express.json() before multer routes
 app.use(express.json())
